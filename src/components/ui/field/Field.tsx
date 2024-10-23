@@ -1,7 +1,7 @@
 import { forwardRef } from "react";
-import { OutlinedInput, OutlinedInputProps, Typography } from "@mui/material";
+import { OutlinedInput, OutlinedInputProps } from "@mui/material";
 import { TypeInputProps } from "./field.types";
-import { theme } from "../../../styles/theme";
+import ErrorMessage from "../error/ErrorMessage";
 
 const Field = forwardRef<HTMLInputElement, TypeInputProps>(
   ({ error, placeholder, ...rest }, ref) => {
@@ -13,11 +13,7 @@ const Field = forwardRef<HTMLInputElement, TypeInputProps>(
           error={!!error}
           {...(rest as OutlinedInputProps)}
         />
-        {error && (
-          <Typography color={theme.palette.error.main} marginLeft="14px">
-            {error.message}
-          </Typography>
-        )}
+        {error && <ErrorMessage>{error.message}</ErrorMessage>}
       </>
     );
   }

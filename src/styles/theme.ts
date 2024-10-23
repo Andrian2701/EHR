@@ -44,6 +44,13 @@ export const theme = createTheme({
     },
   },
   components: {
+    MuiTypography: {
+      styleOverrides: {
+        root: {
+          textDecoration: "none",
+        },
+      },
+    },
     MuiButton: {
       defaultProps: {
         disableRipple: true,

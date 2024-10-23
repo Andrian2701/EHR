@@ -3,10 +3,12 @@ import { Link, useNavigate } from "react-router-dom";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useMutation } from "@tanstack/react-query";
 import Field from "../ui/field/Field";
+import ErrorMessage from "../ui/error/ErrorMessage";
 import AppButton from "../ui/button/AppButton";
 import { authService } from "../../services/auth.service";
 import { IAuthFormState } from "../../types/auth.types";
 import { theme } from "../../styles/theme";
+import Loader from "../ui/loader/Loader";
 
 interface IAuthProps {
   type: "Login" | "Register";
@@ -27,7 +29,7 @@ const Auth = ({ type }: IAuthProps) => {
     },
   });
 
-  const { mutate, isPending } = useMutation({
+  const { mutate, isPending, error } = useMutation({
     mutationFn: (data: IAuthFormState) => {
       if (type === "Login") {
         return authService.loginUser(data);
@@ -98,12 +100,14 @@ const Auth = ({ type }: IAuthProps) => {
               disabled={isPending}
             />
           </Box>
-          <AppButton pending={isPending}>Proceed</AppButton>
+          {error && <ErrorMessage>{error.message}</ErrorMessage>}
+          <AppButton pending={isPending}>
+            {isPending ? <Loader /> : "Proceed"}
+          </AppButton>
           <Typography
             component={Link}
             to={type === "Login" ? "/register" : "/login"}
-            color={theme.palette.primary.main}
-            sx={{ textDecoration: "none" }}
+            color="primary"
           >
             {type === "Login"
               ? "Register new account"
